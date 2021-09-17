@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout } from '../components/layout';
+import LoadingIndicator from '../components/loadingIndicator';
 import { ResultCard } from '../components/resultCard';
 import { ApiResults } from '../models/models';
 import { CardGrid } from '../styles/AppStyles';
@@ -30,7 +31,7 @@ export const Home = () => {
   return (
     <Layout>
       <>
-        {loading && <h1>Loading</h1>}
+        {loading && <LoadingIndicator />}
         <CardGrid>
           {results.map((result: ApiResults) => (
             <ResultCard key={result.id} result={result} />
