@@ -27,7 +27,7 @@ export const Home = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://api.github.com/search/repositories?q=${query}+language:${language}&sort=stars&order=desc}`
+        `https://api.github.com/search/repositories?q=${query}+language:${language}&sort=stars&order=desc`
       );
       const searchResults = await response.json();
       setResults([...results, ...searchResults.items]);
