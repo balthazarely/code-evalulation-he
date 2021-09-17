@@ -1,10 +1,15 @@
-export interface ParamsInterface {
+export interface RepoParamsInterface {
   author: string;
   name: string;
 }
 
 export interface Props {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | undefined;
+}
+
+export interface GridProps {
+  totalCount: number | undefined;
+  results: ApiResults[];
 }
 
 export interface ApiResults {

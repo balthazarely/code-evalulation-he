@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Layout } from '../components/layout';
-import LoadingIndicator from '../components/loadingIndicator';
-import { ResultCard } from '../components/resultCard';
 import SearchInput from '../components/searchInput';
 import { ApiResults } from '../models/models';
-import { CardGrid } from '../styles/AppStyles';
 import styled from 'styled-components';
 import LanguageSelector from '../components/languageSelector';
+import ResultsGrid from '../components/cardGrid';
 
 export const Home = () => {
   const [query, setQuery] = useState<string>('');
+  const [language, setLanguage] = useState<string>('javascript');
   const [loading, setLoading] = useState<boolean>(false);
   const [results, setResults] = useState<ApiResults[]>([]);
-  const [language, setLanguage] = useState<string>('javascript');
+  const [totalCount, setTotalCount] = useState<number>();
 
   const handleSearchQuery = (e: string) => {
+    setResults([]);
     setQuery(e.toLowerCase());
   };
 
   const handleLanguageQuery = (e: string) => {
+    setResults([]);
     setLanguage(e.toLowerCase());
   };
 
@@ -26,10 +27,11 @@ export const Home = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://api.github.com/search/repositories?q=${query}+language:${language}&sort=stars&order=desc`
+        `https://api.github.com/search/repositories?q=${query}+language:${language}&sort=stars&order=desc}`
       );
       const searchResults = await response.json();
-      setResults(searchResults.items);
+      setResults([...results, ...searchResults.items]);
+      setTotalCount(searchResults.total_count);
       setLoading(false);
       console.log(searchResults);
     } catch (error) {
@@ -45,16 +47,18 @@ export const Home = () => {
           <LanguageSelector handleLanguageQuery={handleLanguageQuery} />
           <SearchBtn onClick={searchAllRepos}>Search</SearchBtn>
         </InputWrapper>
-        {loading ? (
-          <LoadingIndicator />
-        ) : (
-          <>
-            <CardGrid>
-              {results.map((result: ApiResults) => (
-                <ResultCard key={result.id} result={result} />
-              ))}
-            </CardGrid>
-          </>
+
+        <ResultsGrid totalCount={totalCount} results={results} />
+        {results.length > 0 && (
+          <LoadMoreBtnWrapper>
+            <SearchBtn
+              onClick={() => {
+                searchAllRepos();
+              }}
+            >
+              {loading ? 'Loading...' : 'Load More'}
+            </SearchBtn>
+          </LoadMoreBtnWrapper>
         )}
       </>
     </Layout>
@@ -86,4 +90,11 @@ const SearchBtn = styled.button`
   &:active {
     transform: translateY(2px);
   }
+`;
+
+const LoadMoreBtnWrapper = styled.div`
+  margin-top: 25px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;

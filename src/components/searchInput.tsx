@@ -9,6 +9,7 @@ const SearchInput = ({ handleSearchQuery }: SearchInputProps) => {
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     handleSearchQuery(e.currentTarget.value);
   };
+
   return (
     <Input
       className="search"
