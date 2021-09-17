@@ -8,6 +8,7 @@ export const Repo = () => {
   const params = useParams<RepoParamsInterface>();
   const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<ApiResults>();
+  const [error, setError] = useState<boolean>();
 
   useEffect(() => {
     const searchSingleRepo = async () => {
@@ -19,9 +20,10 @@ export const Repo = () => {
         const searchResults = await response.json();
         setResult(searchResults);
         setLoading(false);
-        console.log(searchResults);
       } catch (error) {
         console.log(error);
+        setError(true);
+        // set error for if state is empty and print catch
       }
     };
     searchSingleRepo();
@@ -33,6 +35,7 @@ export const Repo = () => {
         <Link style={{ textDecoration: 'none' }} to={'/'}>
           <BackBtn>Back</BackBtn>
         </Link>
+        {error && <h1>Hmmmm.... something went wrong</h1>}
         {result && (
           <ResultCard>
             <div className="header">{result.name}</div>

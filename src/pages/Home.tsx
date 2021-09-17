@@ -13,6 +13,7 @@ export const Home = () => {
   const [results, setResults] = useState<ApiResults[]>([]);
   const [totalCount, setTotalCount] = useState<number>();
 
+  // Functions to pass search query and language selection up
   const handleSearchQuery = (e: string) => {
     setResults([]);
     setQuery(e.toLowerCase());

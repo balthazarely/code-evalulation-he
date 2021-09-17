@@ -12,8 +12,12 @@ function LanguageSelector({ handleLanguageQuery }: SelectInputProps) {
   return (
     <div>
       <Select name="languages" onChange={onChange}>
-        <option value="javascript">javascript</option>
-        <option value="python">python</option>
+        <option value="javascript">Javascript</option>
+        <option value="python">Python</option>
+        <option value="Objective-C">Objective-C</option>
+        <option value="C">C</option>
+        <option value="Java">Java</option>
+        <option value="ASP">ASP</option>
       </Select>
     </div>
   );
